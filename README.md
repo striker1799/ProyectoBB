@@ -97,6 +97,8 @@ ALGORITMO GestionPeliculas
             
     MIENTRAS opcion SEA DISTINTO DE 0
 FIN ALGORITMO
+```
+
 ## 🚀 6. Instalación y Ejecución
 ### Requisitos previos
 *   **Java Development Kit (JDK) 17** o superior instalado en el sistema.

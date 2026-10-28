@@ -51,7 +51,8 @@ Lógica: Controla el flujo con un do-while y un switch, gestionando las consulta
 Diagrama Entidad-Relación (ER)
 El siguiente diagrama muestra cómo se conectan las 5 tablas a través de sus Primary Keys (PK) y Foreign Keys (FK):
 
-<img width="1584" height="1551" alt="deepseek_mermaid_20261028_23dd83" src="https://github.com/user-attachments/assets/ca3e1fd1-d4e4-4c87-b15f-9f46cfdd809f" />
+<img width="2414" height="2412" alt="deepseek_mermaid_20261028_cac2ea" src="https://github.com/user-attachments/assets/44d45c35-45cb-40dd-a3ed-ce36822add22" />
+
 
 ⭐ Uso de Primary Keys (PK) y Foreign Keys (FK)
 Para garantizar la integridad de los datos y optar al Notable, el esquema se ha diseñado relacionalmente:

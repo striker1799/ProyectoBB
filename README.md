@@ -34,7 +34,7 @@ ProyectoBB/
 ├── README.md                                  # Documentación del proyecto
 └── peliculasDB.mv.db                          # Archivo de BD (generado automáticamente al ejecutar)
 ```
-🏗️ 3. Descomposición del Programa
+## 🏗️ 3. Descomposición del Programa
 El código está dividido en dos clases principales para separar responsabilidades:
 
 A. DatabaseManager.java (Capa de Datos)
@@ -47,39 +47,12 @@ Interfaz: Dibuja un menú interactivo por consola con colores ANSI.
 
 Lógica: Controla el flujo con un do-while y un switch, gestionando las consultas SQL, los errores y la interacción con el usuario.
 
-📊 4. Modelo de Datos (Esquema y Diagrama)
+## 📊 4. Modelo de Datos (Esquema y Diagrama)
 Diagrama Entidad-Relación (ER)
 El siguiente diagrama muestra cómo se conectan las 5 tablas a través de sus Primary Keys (PK) y Foreign Keys (FK):
 
-erDiagram
-    GENERO ||--o{ PELICULA : "tiene"
-    DIRECTOR ||--o{ PELICULA : "dirige"
-    PELICULA ||--o{ PELICULA_ACTOR : "participa"
-    ACTOR ||--o{ PELICULA_ACTOR : "actúa"
+<img width="1584" height="1551" alt="deepseek_mermaid_20261028_23dd83" src="https://github.com/user-attachments/assets/ca3e1fd1-d4e4-4c87-b15f-9f46cfdd809f" />
 
-    GENERO {
-        int id_genero PK
-        string nombre
-    }
-    DIRECTOR {
-        int id_director PK
-        string nombre
-    }
-    ACTOR {
-        int id_actor PK
-        string nombre
-    }
-    PELICULA {
-        int id_pelicula PK
-        string titulo
-        int anio
-        int id_genero FK
-        int id_director FK
-    }
-    PELICULA_ACTOR {
-        int id_pelicula PK, FK
-        int id_actor PK, FK
-    }
 ⭐ Uso de Primary Keys (PK) y Foreign Keys (FK)
 Para garantizar la integridad de los datos y optar al Notable, el esquema se ha diseñado relacionalmente:
 
@@ -124,7 +97,7 @@ id_pelicula (INT, PK Compuesta, FK → pelicula.id_pelicula)
 
 id_actor (INT, PK Compuesta, FK → actor.id_actor)
 
-📝 5. Pseudocódigo del Funcionamiento
+## 📝 5. Pseudocódigo del Funcionamiento
 text
 ALGORITMO GestionPeliculas
     INICIALIZAR BaseDeDatos (Conectar, crear tablas y datos)
@@ -153,7 +126,7 @@ ALGORITMO GestionPeliculas
             
     MIENTRAS opcion SEA DISTINTO DE 0
 FIN ALGORITMO
-🔌 6. Prueba de Conexión y Ejecución
+## 🔌 6. Prueba de Conexión y Ejecución
 🛠️ Requisitos previos
 Java Development Kit (JDK) 17 o superior.
 
@@ -190,7 +163,7 @@ User Name: sa
 
 Password: (en blanco)
 
-⚙️ 7. Funcionalidades (Consultas Implementadas)
+## ⚙️ 7. Funcionalidades (Consultas Implementadas)
 Listar (Simple): SELECT * FROM pelicula.
 
 Ver reparto (JOIN): Cruza 4 tablas (pelicula, director, genero, actor) usando INNER JOIN.

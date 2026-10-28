@@ -1,70 +1,110 @@
-# 🎬 Gestión de Películas – Aplicación H2
+# 🎬 Sistema de Gestión de Películas (Java + H2)
 
-Pequeña aplicación de gestión de películas que utiliza una base de datos **H2** con 3 tablas relacionadas. Incluye un menú interactivo por consola y las consultas SQL requeridas (simple, JOIN y agregación).
+**Autor:** Robert
+**Proyecto:** Aplicación de gestión de base de datos relacional
 
-## 📋 Modelo de datos
+## 📖 Resumen del Proyecto
+Este proyecto es una aplicación de consola desarrollada en **Java** que se conecta a una base de datos relacional **H2**. El sistema permite administrar un catálogo de películas, gestionando de forma relacional los géneros, directores y actores.
 
-| Tabla | Claves | Columnas |
-|-------|--------|----------|
-| **genero**   | PK `id_genero` | `nombre` |
-| **director** | PK `id_director` | `nombre` |
-| **pelicula** | PK `id_pelicula`, FK `id_genero` → genero, FK `id_director` → director | `titulo`, `anio` |
+El objetivo principal de la práctica es demostrar el dominio del modelado relacional, el uso de JDBC para la conexión a bases de datos, la ejecución de consultas SQL complejas y el control de versiones profesional con Git.
 
-## 🔎 Consultas SQL
+## 🛠️ Tecnologías Utilizadas
+*   **Lenguaje:** Java (JDK 17 o superior)
+*   **Gestor de dependencias:** Maven
+*   **Base de Datos:** H2 (Modo archivo, versión 2.2.224)
+*   **Entorno de Desarrollo:** IntelliJ IDEA
 
-**1. Simple:**
-```sql
-SELECT * FROM pelicula;
-```
+---
 
-**2. JOIN:**
-```sql
-SELECT p.titulo, d.nombre AS director, g.nombre AS genero
-FROM pelicula p
-INNER JOIN director d ON p.id_director = d.id_director
-INNER JOIN genero   g ON p.id_genero   = g.id_genero;
-```
+## 📊 Modelo de Datos (Esquema)
 
-**3. Agregación:**
-```sql
-SELECT g.nombre AS genero, COUNT(p.id_pelicula) AS total
-FROM genero g
-LEFT JOIN pelicula p ON g.id_genero = p.id_genero
-GROUP BY g.nombre
-ORDER BY total DESC;
-```
+El proyecto utiliza un modelo relacional de **5 tablas**. Se han definido correctamente las Claves Primarias (PK) y las Claves Foráneas (FK) para garantizar la integridad referencial, demostrando relaciones **Uno a Muchos (1:N)** y **Muchos a Muchos (N:M)**.
 
-## 🖥️ Menú interactivo
+| Tabla | Tipo | Claves y Restricciones |
+| :--- | :--- | :--- |
+| **`genero`** | Catálogo | **PK:** `id_genero` |
+| **`director`** | Catálogo | **PK:** `id_director` |
+| **`actor`** | Catálogo | **PK:** `id_actor` |
+| **`pelicula`** | Principal | **PK:** `id_pelicula`<br>**FK:** `id_genero` (→ genero)<br>**FK:** `id_director` (→ director) |
+| **`pelicula_actor`** | Intermedia (N:M) | **PK Compuesta:** `id_pelicula` + `id_actor`<br>**FK:** `id_pelicula` (→ pelicula)<br>**FK:** `id_actor` (→ actor) |
 
-| Opción | Acción | Tipo |
-|--------|--------|------|
-| 1 | Listar películas | Consulta simple |
-| 2 | Ver películas con JOIN | JOIN |
-| 3 | Contar películas por género | Agregación |
-| 4 | Añadir género | Inserción |
-| 5 | Añadir director | Inserción |
-| 6 | Añadir película | Inserción |
-| 7 | Eliminar película por ID | Borrado |
-| 0 | Salir | — |
+*Los scripts de creación de tablas e inserción de datos se encuentran en el archivo `schema.sql` (y también están integrados en la clase `DatabaseManager.java` para su creación automática).*
 
-## 🚀 Cómo ejecutar
+---
 
-Requisitos: **Java 17+** y **Maven**.
+## 📝 Pseudocódigo del Funcionamiento
 
+Lógica general del flujo de la aplicación por consola:
+
+    INICIO
+        Inicializar Base de Datos (Crear tablas y datos si no existen)
+        
+        HACER
+            Limpiar pantalla
+            Mostrar Menú de Opciones (1 al 6, o 0 para salir)
+            Pedir opción al usuario
+            
+            SEGÚN opción:
+                Caso 1: Ejecutar SELECT simple (Listar películas)
+                Caso 2: Ejecutar SELECT con JOIN (Ver reparto cruzando 4 tablas)
+                Caso 3: Ejecutar SELECT con GROUP BY (Estadísticas por género)
+                Caso 4: Pedir datos -> INSERT (Añadir película de forma guiada)
+                Caso 5: Pedir ID -> DELETE (Borrar película y sus relaciones)
+                Caso 6: Pedir texto -> SELECT con LIKE (Buscador por título/actor/director)
+                Caso 0: Salir del bucle
+                
+            Pausar hasta que el usuario pulse ENTER
+            
+        MIENTRAS opción sea distinta de 0
+    FIN
+
+---
+
+## 💻 Instalación de H2 (Windows)
+
+Aunque el proyecto incluye la dependencia de H2 a través de Maven (por lo que el código compilará y funcionará sin instalar nada extra), si deseas inspeccionar la base de datos visualmente, puedes instalar la consola web de H2:
+
+1.  Ve a la página oficial: [https://www.h2database.com/html/download.html](https://www.h2database.com/html/download.html).
+2.  Descarga el **Windows Installer** (o el archivo `.zip` portable).
+3.  Si usas el instalador, ejecútalo y sigue los pasos. Si usas el `.zip`, descomprímelo y ejecuta el archivo `h2.bat` de la carpeta `bin`.
+4.  Se abrirá una consola de comandos y tu navegador se dirigirá a `http://localhost:8082`.
+5.  **Para conectarte a los datos del proyecto:**
+    *   **JDBC URL:** `jdbc:h2:C:/Users/Struker/Documents/ProyectoBB/peliculasDB` *(Asegúrate de que la ruta es la correcta a tu archivo).*
+    *   **User Name:** `sa`
+    *   **Password:** *(dejar en blanco)*
+
+---
+
+## 🚀 Cómo Ejecutar el Proyecto
+
+### Requisitos previos
+Tener instalado **Java (JDK 17+)** y **Maven**.
+
+### Opción A: Desde la terminal (Maven)
+Abre una terminal en la raíz del proyecto (donde está el `pom.xml`) y ejecuta:
 ```bash
 mvn clean compile exec:java
-```
 
-La primera vez que se ejecuta, `DatabaseManager.init()` crea las tablas e inserta los datos de ejemplo. La base de datos se guarda en `./peliculasDB.mv.db`.
+Opción B: Desde IntelliJ IDEA (Recomendado)
+Abre IntelliJ IDEA y carga el proyecto (File → Open).
 
-## 🛠️ Tecnologías
+Espera a que Maven sincronice las dependencias (verás la librería de H2 en External Libraries).
 
-- H2 Database 2.x
-- Java 17 (JDBC)
-- Maven
+Abre el archivo src/main/java/com/ejemplo/GestionPeliculas.java.
 
-## 👤 Autor
+Haz clic en el botón verde ▶ al lado del método public static void main.
 
-- **Nombre**: Tu Nombre
-- **Curso**: Desarrollo de Aplicaciones / Programación
-- **Repositorio**: https://github.com/striker1799/ProyectoBB
+⚙️ Funcionalidades Implementadas (Consultas SQL)
+El menú interactivo cuenta con las siguientes opciones que demuestran el uso de diferentes consultas:
+
+Listar películas (Simple): Uso de SELECT * FROM pelicula.
+
+Ver reparto (JOIN): Uso de INNER JOIN para cruzar las tablas pelicula, director, genero y actor. Demuestra la capacidad de unir datos relacionales.
+
+Estadísticas (Agregación): Uso de COUNT y GROUP BY para contar cuántas películas hay registradas por cada género.
+
+Añadir película: Inserta datos en pelicula y pelicula_actor usando PreparedStatement (para evitar inyección SQL). Permite crear géneros, directores o actores nuevos sobre la marcha si no existen.
+
+Borrar película: Elimina registros respetando la integridad referencial (borra primero el reparto en la tabla intermedia y luego la película).
+
+Buscador (LIKE): Búsqueda dinámica e insensible a mayúsculas usando el operador LIKE de SQL para encontrar películas por título, actor o director.

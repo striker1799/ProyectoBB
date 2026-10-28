@@ -13,12 +13,13 @@ El objetivo principal es demostrar el dominio de la conexión a bases de datos m
 
 ---
 
-## 📂 2. Estructura del Proyecto (Árbol de Directorios)
+## 📂 2. Estructura del Proyecto (Diagrama de Árbol)
 
-El proyecto sigue la estructura estándar de Maven:
+El proyecto sigue la estructura estándar de Maven. Este es el árbol de directorios y archivos principales:
 
 ```text
 ProyectoBB/
+│
 ├── src/
 │   └── main/
 │       └── java/
@@ -26,11 +27,12 @@ ProyectoBB/
 │               └── ejemplo/
 │                   ├── DatabaseManager.java   # Clase de conexión y creación de BD
 │                   └── GestionPeliculas.java  # Menú principal y lógica de la app
+│
 ├── schema.sql                                 # Script SQL con la estructura de las tablas
 ├── data.sql                                   # Script SQL con los datos de prueba
 ├── pom.xml                                    # Configuración de Maven y dependencia H2
 ├── README.md                                  # Documentación del proyecto
-└── peliculasDB.mv.db                          # Archivo de BD (generado automáticamente)
+└── peliculasDB.mv.db                          # Archivo de BD (generado automáticamente al ejecutar)
 ```
 🏗️ 3. Descomposición del Programa
 El código está dividido en dos clases principales para separar responsabilidades:
@@ -45,7 +47,39 @@ Interfaz: Dibuja un menú interactivo por consola con colores ANSI.
 
 Lógica: Controla el flujo con un do-while y un switch, gestionando las consultas SQL, los errores y la interacción con el usuario.
 
-📊 4. Modelo de Datos (Esquema Detallado)
+📊 4. Modelo de Datos (Esquema y Diagrama)
+Diagrama Entidad-Relación (ER)
+El siguiente diagrama muestra cómo se conectan las 5 tablas a través de sus Primary Keys (PK) y Foreign Keys (FK):
+
+erDiagram
+    GENERO ||--o{ PELICULA : "tiene"
+    DIRECTOR ||--o{ PELICULA : "dirige"
+    PELICULA ||--o{ PELICULA_ACTOR : "participa"
+    ACTOR ||--o{ PELICULA_ACTOR : "actúa"
+
+    GENERO {
+        int id_genero PK
+        string nombre
+    }
+    DIRECTOR {
+        int id_director PK
+        string nombre
+    }
+    ACTOR {
+        int id_actor PK
+        string nombre
+    }
+    PELICULA {
+        int id_pelicula PK
+        string titulo
+        int anio
+        int id_genero FK
+        int id_director FK
+    }
+    PELICULA_ACTOR {
+        int id_pelicula PK, FK
+        int id_actor PK, FK
+    }
 ⭐ Uso de Primary Keys (PK) y Foreign Keys (FK)
 Para garantizar la integridad de los datos y optar al Notable, el esquema se ha diseñado relacionalmente:
 
